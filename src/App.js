@@ -1,37 +1,46 @@
 import React, { Component } from 'react';
-import { connect } from 'react-redux'
-import { Route, Switch } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { Route, Switch, withRouter } from 'react-router-dom';
+import * as ReadableApi from './utils/ReadableApi';
+import CategoryViewComponent from './components/categories/CategoryView';
 
 class App extends Component {
+
+  state = {
+    categories: [],
+    posts: []
+  }
+
+  componentDidMount(){
+    ReadableApi.getAllCategories()
+               .then((categories) => this.setState({
+                 categories
+               }));
+
+    ReadableApi.getAllPosts()
+               .then((posts) => this.setState({
+                posts
+              }));
+  }
+
   render() {
     return (
-      <div>
-        
-        <Switch>
+        <div className='app'>
+          <Switch>
 
-          <Route exact path='/' render={() => (<h1>hello, world</h1>)}/>
+            <Route exact path='/' render={() => (
+              <CategoryViewComponent categories={this.state.categories}
+                                     posts={this.state.posts}/>
+            )}/>
 
-          <Route render={() => (<h1>not found!</h1>)}/>
+            <Route exact path='/:category' render={() => (<h1>holis</h1>)}/>
 
-        </Switch>
-
-      </div>
+            <Route render={() => (<h1>not found!</h1>)}/>
+            
+          </Switch>
+        </div>
     );
   }
 }
 
-function mapStateToProps({ }){
-  return {
-
-  };
-}
-
-function mapDispatchToProps (dispatch) {
-  return {
-  }
-}
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(App)
+export default withRouter(connect()(App));

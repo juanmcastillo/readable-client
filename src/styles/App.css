@@ -1,0 +1,21 @@
+html, body, #root {
+    height: 100%;
+}
+
+body {
+    line-height: 1.5;
+}
+
+body, .app {
+    background: white;
+}
+
+.undecorated-anchor {
+    text-decoration: none !important;
+}
+
+.floating-btn-bottom{
+    position: fixed;
+    right: 25px;
+    bottom: 25px;
+}

@@ -1,4 +1,4 @@
-const api = process.env.REACT_APP_READABLE_API_URL || 'http://localhost:3001';
+const api = process.env.REACT_APP_READABLE_API_URL || 'http://10.0.0.8:3001';
 
 let token = localStorage.token;
 
@@ -15,7 +15,8 @@ const headers = {
 
 export const getAllCategories = () =>
   fetch(`${api}/categories`, { method: 'GET', headers })
-    .then(res => res.json());
+    .then(res => res.json())
+    .then(data => data.categories);
 
 export const getAllCategoryPosts = (category) =>
   fetch(`${api}/${category}/posts`, { method: 'GET', headers })
@@ -25,7 +26,8 @@ export const getAllCategoryPosts = (category) =>
 
 export const getAllPosts = (category) =>
     fetch(`${api}/posts`, { method: 'GET', headers })
-      .then(res => res.json());
+      .then(res => res.json())
+      .then(data => data);
 
 export const getPostById = (postId) =>
     fetch(`${api}/posts/${postId}`, { method: 'GET', headers })
