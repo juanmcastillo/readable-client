@@ -18,7 +18,7 @@ class CategoryViewComponent extends React.Component {
     toggleSideMenu = () => this.setState({openSideMenu: !this.state.openSideMenu})
 
     render(){
-        const {categories, posts} = this.props;
+        const {categories, posts, sortPostsBy} = this.props;
         
         return (
             <div>
@@ -32,8 +32,10 @@ class CategoryViewComponent extends React.Component {
                                       }
                                       targetOrigin={{horizontal: 'right', vertical: 'top'}}
                                       anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
-                                <MenuItem primaryText="Order by Votes" />
-                                <MenuItem primaryText="Order by Timestamp" />
+                                <MenuItem primaryText="Order by Votes"
+                                          onClick={() => sortPostsBy('voteScore')} />
+                                <MenuItem primaryText="Order by Timestamp"
+                                          onClick={() => sortPostsBy('timestamp')} />
                             </IconMenu>)} />
                 
                 <PostList posts={posts}/>

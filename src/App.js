@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import * as ReadableApi from './utils/ReadableApi';
 import CategoryViewComponent from './components/categories/CategoryView';
+import sortBy from 'sort-by';
 
 class App extends Component {
 
@@ -23,6 +24,12 @@ class App extends Component {
               }));
   }
 
+  sortPostsBy = (parameter) => {
+    this.setState({
+      posts: this.state.posts.sort(sortBy(parameter))
+    });
+  }
+
   render() {
     return (
         <div className='app'>
@@ -30,7 +37,8 @@ class App extends Component {
 
             <Route exact path='/' render={() => (
               <CategoryViewComponent categories={this.state.categories}
-                                     posts={this.state.posts}/>
+                                     posts={this.state.posts}
+                                     sortPostsBy={this.sortPostsBy}/>
             )}/>
 
             <Route exact path='/:category' render={() => (<h1>holis</h1>)}/>
