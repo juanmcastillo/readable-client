@@ -10,3 +10,8 @@ export const getCategories = (dispatch) => (
     ReadableApi.getAllCategories()
                .then((categories) => dispatch(setCategories(categories)))
 );
+
+export const selectCategory = (selectedCategory) => ({
+    type: ActionTypes.SELECT_CATEGORY,
+    selectedCategory
+});

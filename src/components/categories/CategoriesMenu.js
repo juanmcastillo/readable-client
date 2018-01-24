@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import Drawer from 'material-ui/Drawer';
 import MenuItem from 'material-ui/MenuItem';
 import { connect } from 'react-redux';
+import { selectCategory } from '../../actions/Categories';
 
 function CategoriesMenu (props){
     const { categories, openSideMenu, toggleSideMenu} = props;
@@ -17,8 +18,9 @@ function CategoriesMenu (props){
                 categories && categories.length > 0 ?
                     categories.map(category => (
                         <Link className='undecorated-anchor'
-                                key={ShortId.generate()}
-                                to={`/${category.name}`}>
+                              key={ShortId.generate()}
+                              to={`/${category.name}`}
+                              onClick={() => props.selectCategory(category)}>
 
                             <MenuItem onClick={toggleSideMenu}>
                             { 
@@ -39,4 +41,8 @@ const mapStateToProps = ({categories}, props) => ({
     categories: categories.categories
 });
 
-export default connect(mapStateToProps)(CategoriesMenu);
+const mapDispatchToProps = (dispatch) => ({
+    selectCategory: (category) => dispatch(selectCategory(category))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoriesMenu);

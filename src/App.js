@@ -1,31 +1,16 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import * as ReadableApi from './utils/ReadableApi';
 import CategoryViewComponent from './components/categories/CategoryView';
-import sortBy from 'sort-by';
-// import * as CategoryActions from './actions/Categories';
-import { getCategories } from './actions/Categories'
+import { getCategories } from './actions/Categories';
+import { getPosts } from './actions/Posts';
 
 class App extends Component {
-
-  state = {
-    posts: []
-  }
 
   componentDidMount(){
     this.props.fetchCategories();
 
-    ReadableApi.getAllPosts()
-               .then((posts) => this.setState({
-                posts
-              }));
-  }
-
-  sortPostsBy = (parameter) => {
-    this.setState({
-      posts: this.state.posts.sort(sortBy(parameter))
-    });
+    this.props.fetchPosts();
   }
 
   render() {
@@ -35,11 +20,11 @@ class App extends Component {
           <Switch>
 
             <Route exact path='/' render={() => (
-              <CategoryViewComponent posts={this.state.posts}
-                                     sortPostsBy={this.sortPostsBy}/>
+              <CategoryViewComponent />
             )}/>
 
-            <Route exact path='/:category' render={() => (<h1>holis</h1>)}/>
+            <Route exact path='/:category' render={() => (
+              <CategoryViewComponent />)}/>
 
             <Route render={() => (<h1>not found!</h1>)}/>
             
@@ -52,7 +37,8 @@ class App extends Component {
 const mapStateToProps = (state, props) => ({});
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchCategories: () => getCategories(dispatch)
+  fetchCategories: () => getCategories(dispatch),
+  fetchPosts: () => getPosts(dispatch)
 });
 
 export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

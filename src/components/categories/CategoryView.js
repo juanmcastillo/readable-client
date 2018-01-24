@@ -8,6 +8,9 @@ import IconButton from 'material-ui/IconButton';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import CategoriesMenu from './CategoriesMenu';
 import PostList from '../posts/PostList';
+import sortBy from 'sort-by';
+import { connect } from 'react-redux';
+import { setPosts } from '../../actions/Posts';
 
 class CategoryViewComponent extends React.Component {
 
@@ -18,7 +21,7 @@ class CategoryViewComponent extends React.Component {
     toggleSideMenu = () => this.setState({openSideMenu: !this.state.openSideMenu})
 
     render(){
-        const { posts, sortPostsBy} = this.props;
+        const { posts, updatePosts } = this.props;
         
         return (
             <div>
@@ -33,12 +36,18 @@ class CategoryViewComponent extends React.Component {
                                       targetOrigin={{horizontal: 'right', vertical: 'top'}}
                                       anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
                                 <MenuItem primaryText="Order by Votes"
-                                          onClick={() => sortPostsBy('voteScore')} />
+                                          onClick={() => {
+                                            posts.sort(sortBy('voteScore'));
+                                            updatePosts(posts);
+                                          }} />
                                 <MenuItem primaryText="Order by Timestamp"
-                                          onClick={() => sortPostsBy('timestamp')} />
+                                          onClick={() => {
+                                            posts.sort(sortBy('timestamp'));
+                                            updatePosts(posts);
+                                          }} />
                             </IconMenu>)} />
                 
-                <PostList posts={posts}/>
+                <PostList />
 
                 <CategoriesMenu toggleSideMenu={this.toggleSideMenu}
                                 openSideMenu={this.state.openSideMenu} />
@@ -51,4 +60,12 @@ class CategoryViewComponent extends React.Component {
     }
 }
 
-export default CategoryViewComponent;
+const mapStateToProps = (state, props) => ({
+    posts: state.posts.posts
+});
+
+const mapDispatchToProps = (dispatch) => ({
+    updatePosts: (posts) => dispatch(setPosts(posts))
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryViewComponent);
