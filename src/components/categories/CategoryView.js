@@ -18,7 +18,7 @@ class CategoryViewComponent extends React.Component {
     toggleSideMenu = () => this.setState({openSideMenu: !this.state.openSideMenu})
 
     render(){
-        const {categories, posts, sortPostsBy} = this.props;
+        const { posts, sortPostsBy} = this.props;
         
         return (
             <div>
@@ -40,8 +40,7 @@ class CategoryViewComponent extends React.Component {
                 
                 <PostList posts={posts}/>
 
-                <CategoriesMenu categories={categories}
-                                toggleSideMenu={this.toggleSideMenu}
+                <CategoriesMenu toggleSideMenu={this.toggleSideMenu}
                                 openSideMenu={this.state.openSideMenu} />
 
                 <FloatingActionButton className='floating-btn-bottom'>

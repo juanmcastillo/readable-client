@@ -4,19 +4,17 @@ import { Route, Switch, withRouter } from 'react-router-dom';
 import * as ReadableApi from './utils/ReadableApi';
 import CategoryViewComponent from './components/categories/CategoryView';
 import sortBy from 'sort-by';
+// import * as CategoryActions from './actions/Categories';
+import { getCategories } from './actions/Categories'
 
 class App extends Component {
 
   state = {
-    categories: [],
     posts: []
   }
 
   componentDidMount(){
-    ReadableApi.getAllCategories()
-               .then((categories) => this.setState({
-                 categories
-               }));
+    this.props.fetchCategories();
 
     ReadableApi.getAllPosts()
                .then((posts) => this.setState({
@@ -31,13 +29,13 @@ class App extends Component {
   }
 
   render() {
+    
     return (
         <div className='app'>
           <Switch>
 
             <Route exact path='/' render={() => (
-              <CategoryViewComponent categories={this.state.categories}
-                                     posts={this.state.posts}
+              <CategoryViewComponent posts={this.state.posts}
                                      sortPostsBy={this.sortPostsBy}/>
             )}/>
 
@@ -51,4 +49,10 @@ class App extends Component {
   }
 }
 
-export default withRouter(connect()(App));
+const mapStateToProps = (state, props) => ({});
+
+const mapDispatchToProps = (dispatch) => ({
+  fetchCategories: () => getCategories(dispatch)
+});
+
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(App));

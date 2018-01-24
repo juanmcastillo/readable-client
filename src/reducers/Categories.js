@@ -1,8 +1,8 @@
 import * as ActionTypes from "../actions/ActionTypes";
 
-export default function categories(state = {}, action){
+const categories = (state = {}, action) => {
     switch (action.type) {
-        case ActionTypes.GET_CATEGORIES:
+        case ActionTypes.SET_CATEGORIES:
             const { categories } = action;
 
             return {
@@ -14,3 +14,5 @@ export default function categories(state = {}, action){
             return state;
     }
 }
+
+export default categories;

@@ -11,8 +11,7 @@ import './styles/App.css';
 
 const store = createStore(ReducerRegistry, window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__());
 
-const app = 
-            <Provider store={store}>
+const app = <Provider store={store}>
                 <BrowserRouter>
                     <MuiThemeProvider>
                         <App />
