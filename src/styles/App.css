@@ -19,3 +19,16 @@ body, .app {
     right: 25px;
     bottom: 25px;
 }
+
+.post-view{
+    padding: 50px 25px;
+}
+
+.post-view-post-btn {
+    margin-top: 20px;
+}
+
+.padded-text{
+    padding-left: 2.5%;
+    padding-top: 1.5%;
+}

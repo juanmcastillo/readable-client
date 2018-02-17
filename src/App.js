@@ -1,11 +1,14 @@
-import React, { Component } from 'react';
+import React from 'react';
+import CategoryView from './components/categories/CategoryView';
+import PostComposer from './components/posts/PostComposer';
+import PostViewer from './components/posts/PostViewer';
+import Header from './components/shared/Header';
 import { connect } from 'react-redux';
+import { getPosts } from './actions/posts/Posts';
+import { getCategories } from './actions/categories/Categories';
 import { Route, Switch, withRouter } from 'react-router-dom';
-import CategoryViewComponent from './components/categories/CategoryView';
-import { getCategories } from './actions/Categories';
-import { getPosts } from './actions/Posts';
 
-class App extends Component {
+class App extends React.Component {
 
   componentDidMount(){
     this.props.fetchCategories();
@@ -17,18 +20,25 @@ class App extends Component {
     
     return (
         <div className='app'>
+
+          <Header />
+
           <Switch>
 
-            <Route exact path='/' render={() => (
-              <CategoryViewComponent />
-            )}/>
+            <Route exact path='/' component={CategoryView}/>
 
-            <Route exact path='/:category' render={() => (
-              <CategoryViewComponent />)}/>
+            <Route exact path='/posts/create' component={PostComposer}/>
+
+            <Route exact path='/:category/:id' component={PostViewer}/>
+
+            <Route exact path='/:category/:id/edit' component={PostComposer}/>
+
+            <Route exact path='/:category' component={CategoryView}/>
 
             <Route render={() => (<h1>not found!</h1>)}/>
             
           </Switch>
+          
         </div>
     );
   }

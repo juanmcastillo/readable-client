@@ -1,5 +1,5 @@
-import * as ActionTypes from "./ActionTypes";
-import * as ReadableApi from "../utils/ReadableApi";
+import * as ActionTypes from '../ActionTypes';
+import * as ReadableApi from '../../utils/ReadableApi';
 
 export const setCategories = (categories) => ({
     type: ActionTypes.SET_CATEGORIES,

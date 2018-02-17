@@ -1,63 +1,69 @@
 import React from 'react';
-import AppBar from 'material-ui/AppBar';
-import MenuItem from 'material-ui/MenuItem';
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import ContentAdd from 'material-ui/svg-icons/content/add';
-import IconMenu from 'material-ui/IconMenu';
-import IconButton from 'material-ui/IconButton';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import CategoriesMenu from './CategoriesMenu';
 import PostList from '../posts/PostList';
+import ListItemIconMenu from '../shared/ListItemIconMenu';
 import sortBy from 'sort-by';
+import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import { setPosts } from '../../actions/Posts';
+import { setPosts } from '../../actions/posts/Posts';
+import { Toolbar, ToolbarGroup, ToolbarTitle } from 'material-ui/Toolbar';
 
-class CategoryViewComponent extends React.Component {
+function CategoryView ({posts, updatePosts, history}) {
 
-    state = {
-        openSideMenu: false
-    }
+    const actions = [
+        {
+            name: 'Order by Votes',
+            execute: () =>{
+                posts.sort(sortBy('voteScore'));
+                updatePosts(posts);
+            }
+        },
+        {
+            name: 'Order by Timestamp',
+            execute: () =>{
+                posts.sort(sortBy('timestamp'));
+                updatePosts(posts);
+            }
+        }
+    ];
 
-    toggleSideMenu = () => this.setState({openSideMenu: !this.state.openSideMenu})
+    return (
+        <div className="category-view">    
+            
+            <Toolbar>
 
-    render(){
-        const { posts, updatePosts } = this.props;
-        
-        return (
-            <div>
-                <AppBar title="Categories"
-                        onLeftIconButtonClick={this.toggleSideMenu}
-                        iconElementRight={( 
-                            <IconMenu iconButtonElement={
-                                        <IconButton>
-                                            <MoreVertIcon />
-                                        </IconButton>
-                                      }
-                                      targetOrigin={{horizontal: 'right', vertical: 'top'}}
-                                      anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
-                                <MenuItem primaryText="Order by Votes"
-                                          onClick={() => {
-                                            posts.sort(sortBy('voteScore'));
-                                            updatePosts(posts);
-                                          }} />
-                                <MenuItem primaryText="Order by Timestamp"
-                                          onClick={() => {
-                                            posts.sort(sortBy('timestamp'));
-                                            updatePosts(posts);
-                                          }} />
-                            </IconMenu>)} />
+                <ToolbarGroup firstChild={true}>
                 
-                <PostList />
+                </ToolbarGroup>
 
-                <CategoriesMenu toggleSideMenu={this.toggleSideMenu}
-                                openSideMenu={this.state.openSideMenu} />
+                <ToolbarGroup>
 
-                <FloatingActionButton className='floating-btn-bottom'>
-                    <ContentAdd />
-                </FloatingActionButton>
-            </div>
-        );
-    }
+                    <ToolbarTitle text="Sorting"/>
+
+                    <ListItemIconMenu actions={actions}/>
+
+                </ToolbarGroup>
+
+            </Toolbar>
+
+            <PostList history={history}/>
+
+            <FloatingActionButton className="floating-btn-bottom"
+                                  onClick={() => history.push("/posts/create")}>
+
+                <ContentAdd />  
+
+            </FloatingActionButton>
+
+        </div>
+    );
+}
+
+CategoryView.propTypes = {
+    history: PropTypes.object.isRequired,
+    posts: PropTypes.array,
+    updatePosts: PropTypes.func.isRequired
 }
 
 const mapStateToProps = (state, props) => ({
@@ -68,4 +74,4 @@ const mapDispatchToProps = (dispatch) => ({
     updatePosts: (posts) => dispatch(setPosts(posts))
 });
 
-export default connect(mapStateToProps, mapDispatchToProps)(CategoryViewComponent);
+export default connect(mapStateToProps, mapDispatchToProps)(CategoryView);
