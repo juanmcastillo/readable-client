@@ -18,64 +18,75 @@ class PostViewer extends React.Component {
   }
 
   render(){
-    const {post, history, match, deletePost, upVote, downVote} = this.props;
+    const { post, history, match, deletePost, upVote, downVote } = this.props;
 
     return (
       <div>
+      {
+        post ? 
+              <div>
 
-          <Card>
-            <CardHeader />
-            <CardTitle title={post.title} subtitle={`by ${post.author} | score: ${post.voteScore}`} />
+                <Card>
 
-            <CardText>
-            {
-              post.body 
-            }
-            </CardText>
+                  <CardHeader />
 
-            <CardActions>
+                  <CardTitle title={post.title} subtitle={`by ${post.author} | score: ${post.voteScore}`} />
 
-              <IconButton tooltip="Edit">
+                  <CardText>
+                  {
+                    post.body 
+                  }
+                  </CardText>
 
-                <ContentCreate onClick={() => history.push(`/${post.category}/${post.id}/edit`)}/>
+                  <CardActions>
 
-              </IconButton>
+                    <IconButton tooltip="Edit">
 
-              <IconButton tooltip="Delete">
+                      <ContentCreate onClick={() => history.push(`/${post.category}/${post.id}/edit`)}/>
 
-                <ActionDelete onClick={() => {
-                  deletePost(post);
-                  history.push('/');
-                }}/>
+                    </IconButton>
 
-              </IconButton>
+                    <IconButton tooltip="Delete">
 
-              <CommentComposer postId={this.props.match.params.id}/>
+                      <ActionDelete onClick={() => {
+                        deletePost(post);
+                        history.push('/');
+                      }}/>
 
-              <IconButton tooltip="Upvote">
+                    </IconButton>
 
-                <ThumbUp onClick={() => upVote(post)}/>
-                
-              </IconButton>
-              
-              <IconButton tooltip="Downvote">
+                    <CommentComposer postId={this.props.match.params.id}/>
 
-                <ThumbDown onClick={() => downVote(post)}/>
+                    <IconButton tooltip="Upvote">
 
-              </IconButton>
+                      <ThumbUp onClick={() => upVote(post)}/>
+                      
+                    </IconButton>
+                    
+                    <IconButton tooltip="Downvote">
 
-            </CardActions>
+                      <ThumbDown onClick={() => downVote(post)}/>
 
-          </Card>
+                    </IconButton>
 
-          <CommentList postId={match.params.id} />
+                  </CardActions>
+
+                  </Card>
+
+                  <CommentList postId={match.params.id} />
+              </div>
+             : <h2 className="padded-text">This post is no longer available.</h2>
+      }
+
+          
+
       </div>
     );
   }
 }
 
 PostViewer.propTypes = {
-  post: PropTypes.object,
+  post: PropTypes.object.isRequired,
   deletePost: PropTypes.func.isRequired,
   getPost: PropTypes.func.isRequired,
   upVote: PropTypes.func.isRequired,
@@ -85,7 +96,7 @@ PostViewer.propTypes = {
 }
 
 const mapStateToProps = (state, props) => ({
-  post: state.posts.posts ? state.posts.posts.find(p => p.id === props.match.params.id) : {}
+  post: state.posts.posts ? state.posts.posts.find(p => p.id === props.match.params.id) : undefined
 });
 
 const mapDispatchToProps = (dispatch) => ({
